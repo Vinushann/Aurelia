@@ -59,6 +59,7 @@ def limit_vocabulary(documents,doc_ids, min_df=0.01, max_df=0.85):
     with open('./pickle/limited_tfidf_matrix.pkl', 'wb') as f:
         pickle.dump((limited_tfidf_matrix, doc_ids), f)
 
+
 def get_candidates(query, vectorizer, tfidf_matrix, documents, doc_ids, kmeans, document_clusters):
     # Step 1: Cluster selection (find the most relevant cluster)
     query_vector = vectorizer.transform([query])
