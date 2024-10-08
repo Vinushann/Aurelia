@@ -1,0 +1,12 @@
+Step 1: Preprocess Documents
+python preprocess_documents.py
+
+Step 2: Vectorize Documents
+python vectorization.py
+
+Step 3: Query and Retrieve Documents
+python ranking.py
+
+python -m http.server 8502
+
+misspelling words
