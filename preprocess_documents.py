@@ -16,24 +16,8 @@ from pdfminer.high_level import extract_text # Libraries to extract text from PD
     nltk.download('wordnet') #lemmatizing
 """
 
-#COMMENED CODE
-"""def extract_text_from_pdfs(pdf_folder_path):
-    pdf_files = glob.glob(os.path.join(pdf_folder_path, '*.pdf'))
-    documents = {}
 
-    for pdf_file in pdf_files:
-        text = extract_text(pdf_file)
-        doc_id = os.path.basename(pdf_file)
-        
-        if not text.strip():
-            print(f"Document {doc_id} is empty after text extraction.")
-        else:
-            print(f"Document {doc_id} has content after text extraction.")
-        documents[doc_id] = text
-    return documents
-"""
 
-# ORGINAL CODE: 1
 """
 Purpose: 
         Extract the texts from the pdf
@@ -77,27 +61,19 @@ def extract_text_from_pdfs(pdf_folder_path):
     Purpose: Preprocess the document
 """
 def preprocess_text(text):
-    
     text = text.lower()
     # Step 1: Lowercase Text: the runners were running quickly towards the finish-line!
-    # ?
     punctuations = string.punctuation.replace('-', '') 
     #Step 2: Remove Punctuation: the runners were running quickly towards the finish-line
-
-    # ?
-    text = text.translate(str.maketrans('', '', punctuations))
-    
+    text = text.translate(str.maketrans('', '', punctuations))    
     tokens = nltk.word_tokenize(text)
     # Step 3: Tokenization: ['the', 'runners', 'were', 'running', 'quickly', 'towards', 'the', 'finish-line']
-
     stop_words = set(stopwords.words('english'))
     tokens = [token for token in tokens if token not in stop_words]
     # Step 4: Remove Stopwords: ['runners', 'running', 'quickly', 'towards', 'finish-line']
-    
     #Step 5: Lemmatization: ['runner', 'running', 'quickly', 'towards', 'finish-line']
     lemmatizer = WordNetLemmatizer()
     tokens = [lemmatizer.lemmatize(token) for token in tokens]
-    
     #Step 6: Final Preprocessed Text: runner running quickly towards finish-line
     preprocessed_text = ' '.join(tokens)
     return preprocessed_text

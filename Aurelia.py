@@ -1,4 +1,5 @@
 import os
+import nltk
 import pickle
 import streamlit as st
 from spellchecker import SpellChecker
@@ -16,6 +17,11 @@ pdf_base_url = 'http://localhost:8502/static/pdfs'
 
 # Spell Checker
 spell = SpellChecker()
+
+# Download WordNet if not already done
+nltk.download('wordnet')
+nltk.download('omw-1.4')
+
 
 def correct_query(query):
     corrected_query = " ".join([spell.correction(word) for word in query.split()])
@@ -50,11 +56,11 @@ def load_preprocessed_documents():
 
 documents = load_preprocessed_documents()
 
-"""
-    kmeans: model
-    document_clusters: {'doc1': 2, 'doc2': 5, 'doc3': 1}
-    purpose: it will create cluster for each documents
-"""
+
+#    kmeans: model
+#    document_clusters: {'doc1': 2, 'doc2': 5, 'doc3': 1}
+#    purpose: it will create cluster for each documents
+
 # Cluster the documents initially
 def load_clusters():
     kmeans, document_clusters = cluster_documents(tfidf_matrix, doc_ids)
