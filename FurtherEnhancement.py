@@ -29,33 +29,35 @@ def bm25_candidate_selection(query, documents, doc_ids, top_n=50):
         Use BM25 to select top candidate documents for a given query.
     """
     tokenized_documents = [doc.split() for doc in documents]
+    # intialize the BM250kapi
+    # This model will calculate the BM25 score for each document when given a query.
     bm25 = BM25Okapi(tokenized_documents)
+
+    # split the query
     tokenized_query = query.split()
+    # alread this model have tokenized documents now it is gonna calculate score for given query
     bm25_scores = bm25.get_scores(tokenized_query)
     
     # Get top_n documents based on BM25 score, ensuring index is within bounds
     top_n_indices = np.argsort(bm25_scores)[::-1][:min(top_n, len(doc_ids))]
+    # Get first 50 documents
     top_n_docs = [doc_ids[i] for i in top_n_indices if i < len(doc_ids)]
     
     return top_n_docs
 
 
-
-# Threshold-Based Document Filtering
+#  Filter documents based on a similarity score threshold.
 def threshold_based_filtering(query_vector, tfidf_matrix, doc_ids, threshold=0.1):
-    """
-        Filter documents based on a similarity score threshold.
-    """
+    # cosine similarity return 2D array from that extract only first row which is contain scores
     similarity_scores = cosine_similarity(query_vector, tfidf_matrix)[0]
     filtered_docs = [(doc_ids[i], score) for i, score in enumerate(similarity_scores) if score >= threshold]
     return filtered_docs
 
 
+"""
 # Use Document Frequency to Limit Vocabulary
 def limit_vocabulary(documents,doc_ids, min_df=0.01, max_df=0.85):
-    """
-        Limit vocabulary based on document frequency to improve performance.
-    """
+    Limit vocabulary based on document frequency to improve performance.
     vectorizer_limited = TfidfVectorizer(min_df=min_df, max_df=max_df, stop_words=ENGLISH_STOP_WORDS)
     limited_tfidf_matrix = vectorizer_limited.fit_transform(documents)
     # Save the new vectorizer and TF-IDF matrix
@@ -63,6 +65,7 @@ def limit_vocabulary(documents,doc_ids, min_df=0.01, max_df=0.85):
         pickle.dump(vectorizer_limited, f)
     with open('./pickle/limited_tfidf_matrix.pkl', 'wb') as f:
         pickle.dump((limited_tfidf_matrix, doc_ids), f)
+"""
 
 
 def get_candidates(query, vectorizer, tfidf_matrix, documents, doc_ids, kmeans, document_clusters):
