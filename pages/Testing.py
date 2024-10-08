@@ -15,9 +15,9 @@ def load_vectorizer_and_matrix():
     Load the TF-IDF vectorizer and the TF-IDF matrix from pickle files.
     Returns the vectorizer, TF-IDF matrix, and document IDs.
     """
-    with open('./pickle/tfidf_vectorizer.pkl', 'rb') as f:
+    with open('../pickle/tfidf_vectorizer.pkl', 'rb') as f:
         vectorizer = pickle.load(f)
-    with open('./pickle/tfidf_matrix.pkl', 'rb') as f:
+    with open('../pickle/tfidf_matrix.pkl', 'rb') as f:
         tfidf_matrix, doc_ids = pickle.load(f)
     return vectorizer, tfidf_matrix, doc_ids
 
@@ -30,7 +30,7 @@ def load_document_snippets():
     Load precomputed document snippets from a pickle file.
     Returns a dictionary mapping document IDs to snippets.
     """
-    with open('./pickle/doc_snippets.pkl', 'rb') as f:
+    with open('../pickle/doc_snippets.pkl', 'rb') as f:
         doc_snippets = pickle.load(f)
     return doc_snippets
 
@@ -109,7 +109,8 @@ def display_metrics(query, tokens, expanded_tokens, ranked_docs, similarity_scor
     # Ask the user to input relevant documents for the query
     st.subheader("Input Relevant Documents")
     st.markdown("Please enter the IDs of the relevant documents separated by commas (e.g., doc1.pdf, doc5.pdf):")
-    relevant_docs_input = st.text_input("Relevant Documents:")
+    relevant_docs_input = st.text_input("Relevant Documents:", value="Burj Khalifa.pdf, Eiffel Tower.pdf")
+    # relevant_docs_input = 
     if relevant_docs_input:
         relevant_docs = [doc.strip() for doc in relevant_docs_input.split(',')]
         compute_evaluation_metrics(ranked_docs, relevant_docs)
